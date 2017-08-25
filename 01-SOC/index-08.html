@@ -19,6 +19,7 @@
 		}
 	</style>
 	<script src="jquery.js"></script>
+	<script src="handlebars.js"></script>
 	<script>
 		String.prototype.toInt = function() {
 			return parseInt(this,10);
@@ -58,6 +59,10 @@
 			this.subscribe = function(attrName, callback){
 				if (typeof callback === 'function')
 					_callbacks[attrName].push(callback);
+			};
+
+			this.toJSON = function(){
+				return { ..._data };
 			}
 		}
 		SalaryCalculator.prototype.calculate = function() {
@@ -94,22 +99,25 @@
 					<div class="field">
 						<table>
 							<tr>
-								<td><div id="divBasic">[Basic]</div></td>
-								<td><div id="divHra">[HRA]</div></td>
-								<td><div id="divDa">[DA]</div></td>
-								<td><div id="divTax">[Tax]</div></td>
-								<td><div id="divResult">[Salary]</div></td>
+								<td><div id="divBasic">{{basic}}</div></td>
+								<td><div id="divHra">{{hra}}</div></td>
+								<td><div id="divDa">{{da}}</div></td>
+								<td><div id="divTax">{{tax}}</div></td>
+								<td><div id="divResult">{{salary}}</div></td>
 							</tr>
 						</table>
 					</div>
 				</div>
 			`
 
+			var templateFn = Handlebars.compile(_template);
+
 			var $root = this.$root = $('<div></div>');
 
 			//render
 			this.render = function(){
-				$root.html(_template);
+				var output = templateFn(calculator.toJSON())
+				$root.html(output);
 			}
 
 			//Reacting to user actions
@@ -130,21 +138,11 @@
 			});
 
 			//Reacting to model changes
-			calculator.subscribe('salary', function(){
-				$('#divResult', $root).html(calculator.get('salary'));
-			});
-			calculator.subscribe('basic', function(){
-				$('#divBasic', $root).html(calculator.get('basic'));
-			});
-			calculator.subscribe('hra', function(){
-				$('#divHra', $root).html(calculator.get('hra'));
-			});
-			calculator.subscribe('da', function(){
-				$('#divDa', $root).html(calculator.get('da'));
-			});
-			calculator.subscribe('tax', function(){
-				$('#divTax', $root).html(calculator.get('tax'));
-			});
+			calculator.subscribe('salary', this.render);
+			calculator.subscribe('basic', this.render);
+			calculator.subscribe('hra', this.render);
+			calculator.subscribe('da', this.render);
+			calculator.subscribe('tax', this.render);
 		}
 
 		//Execute the follwing in the console
