@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Hello World - React</title>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		class HelloWorld extends React.Component{
+			render(){
+				return (
+					<div> 
+						<h1>{this.props.msg}</h1>
+						<hr />
+						<div> 
+							<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmodtempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit essecillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+							<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmodtempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit essecillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+						</div>
+					</div>
+				)
+			}
+		}
+
+		function init(){
+			var username = prompt('Enter the username :');
+			var greetMsg = `Hi ${username}, Welcome to React!`;
+			ReactDOM.render(<HelloWorld msg={greetMsg}/>, 
+				document.getElementById('content'));
+		}
+		//init()
+		document.getElementById('btnGreet').addEventListener('click', init);
+	</script>
+</head>
+<body>
+	<input type="button" value="Greet" id="btnGreet"/>
+	<div id="content">
+		
+	</div>
+</body>
+</html>

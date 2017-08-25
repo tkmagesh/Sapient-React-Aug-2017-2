@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Hello World - React</title>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		class HelloWorld extends React.Component{
+			constructor(){
+				super();
+				this.onBtnGreetClick = this.onBtnGreetClick.bind(this);
+				this.state = {
+					msg : '[Default Message]'
+				};
+			}
+			onBtnGreetClick(){
+				//var username = prompt('Enter the username :');
+				var username = this.refs.txtUserName.value;
+				var greetMsg = `Hi ${username}, Welcome to React!`;
+				this.setState({ msg : greetMsg});
+			}
+			render(){
+				return (
+					<div>
+						<label>User Name : </label>
+						<input type="text" ref="txtUserName"/> 
+						<input type="button" value="Greet" id="btnGreet" onClick={this.onBtnGreetClick}/>
+						<h1>{this.state.msg}</h1>
+						<hr />
+						<div> 
+							<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmodtempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit essecillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+							<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmodtempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit essecillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+						</div>
+					</div>
+				)
+			}
+		}
+
+		function init(){
+			
+			ReactDOM.render(<HelloWorld />, 
+				document.getElementById('content'));
+		}
+		init()
+		
+	</script>
+</head>
+<body>
+	
+	<div id="content">
+		
+	</div>
+</body>
+</html>

@@ -131,11 +131,8 @@
 			});
 
 			//Reacting to model changes
-			calculator.subscribe('salary', this.render);
-			calculator.subscribe('basic', this.render);
-			calculator.subscribe('hra', this.render);
-			calculator.subscribe('da', this.render);
-			calculator.subscribe('tax', this.render);
+			calculator.subscribe(this.render);
+			
 		}
 
 		//Execute the follwing in the console
