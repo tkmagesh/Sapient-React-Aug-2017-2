@@ -51,10 +51,25 @@
 				this.subscriptions.forEach(subscription => subscription());
 			}
 		}
+		class Bug{
+			name = '';
+			isClosed = false;
+
+			constructor(bugName){
+				this.name = bugName;
+			}
+
+			toggle(){
+				this.isClosed = !this.isClosed;
+			}
+		}
+
+
 		class BugsCollection extends EventEmitter{
 			list = [];
 			addNew(bugName){
-				this.list.push(bugName);
+				let newBug = new Bug(bugName);
+				this.list.push(newBug);
 				this.trigger();
 			}
 		}
@@ -64,8 +79,20 @@
 				let bugName = this.refs.txtBugName.value;
 				this.props.model.addNew(bugName);
 			}
+			onBugClick(bug){
+				bug.toggle();
+				console.log(bug);
+			}
 			render(){
-				let bugs = this.props.model.list;
+				let bugs = this.props.model.list,
+					bugItems = bugs.map((bug,index) => (
+						<li key={index}>
+							<span className="bugname" onClick={this.onBugClick.bind(this, bug)}>
+								{bug.name}
+							</span>
+							<div><i>{bug.isClosed.toString()}</i></div>
+						</li>
+					));
 				return(
 					<div>
 						<section className="stats">
@@ -89,8 +116,7 @@
 						</section>
 						<section className="list">
 							<ol id="olBugList">
-								<li><span className="bugname">This is bug - 1</span></li>
-								<li><span className="bugname closed">This is bug - 2</span></li>
+								{bugItems}
 							</ol>
 							<input type="button" value="Remove Closed" />
 						</section>
