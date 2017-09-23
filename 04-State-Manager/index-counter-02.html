@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Counter</title>
+	<script src="state-manager.js"></script>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		function counterReducer(currentState = 0, action){
+			if (action.type === 'INCREMENT')
+				return ++currentState;
+			if (action.type === 'DECREMENT')
+				return --currentState;
+			return currentState;
+		}
+		window.store = SM.createStore(counterReducer);
+
+		class Counter extends React.Component{
+			
+			onIncrementClick(){
+				this.props.dispatch(this.props.increment());
+			}
+			onDecrementClick(){
+				this.props.dispatch(this.props.decrement());
+			}
+			render(){
+				
+				return(
+					<div>
+	
+						<input type="button" value="DECREMENT" onClick={this.onDecrementClick.bind(this)}/>
+						<span> [ {this.props.value} ] </span>
+						<input type="button" value="INCREMENT" onClick={this.onIncrementClick.bind(this)}/>
+					</div>
+				)
+			}
+		}
+		var counterActions = {
+			increment : function (){
+				return { type : 'INCREMENT'};
+			},
+			decrement : function (){
+				return { type : 'DECREMENT'};
+			}
+		}
+
+		
+		function renderApp(){
+			ReactDOM.render(<Counter value={store.getState()} dispatch={store.dispatch} {...counterActions} />,
+				document.getElementById('content'));
+		}
+		renderApp();
+		store.subscribe(renderApp);
+	</script>
+</head>
+<body>
+	<div id="content"></div>
+</body>
+</html>
