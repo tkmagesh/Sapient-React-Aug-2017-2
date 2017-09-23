@@ -68,10 +68,9 @@
 
 		//View
 		class SalaryCalculatorView extends React.Component{
-			getOnChangeFor(attrName){
-				return (function onChange(value){
-					this.props.model.set(attrName, value)
-				}).bind(this);
+			
+			onValueChange(attrName, value){
+				this.props.model.set(attrName, value);
 			}
 			
 			onCalculateClick(){
@@ -81,10 +80,10 @@
 				let data = this.props.model.toJSON();
 				return(
 					<div className="content">
-						<NumberField fieldName="Basic :" onFieldChange={this.getOnChangeFor('basic')} />
-						<NumberField fieldName="HRA :" onFieldChange={this.getOnChangeFor('hra')} />
-						<NumberField fieldName="DA :" onFieldChange={this.getOnChangeFor('da')} />
-						<RangeField fieldName="Tax :" defaultFieldValue={data.tax} onFieldChange={this.getOnChangeFor('tax')} />
+						<NumberField fieldName="Basic :" onFieldChange={this.onValueChange.bind(this, 'basic')} />
+						<NumberField fieldName="HRA :" onFieldChange={this.onValueChange.bind(this, 'hra')} />
+						<NumberField fieldName="DA :" onFieldChange={this.onValueChange.bind(this, 'da')} />
+						<RangeField fieldName="Tax :" defaultFieldValue={data.tax} onFieldChange={this.onValueChange.bind(this, 'tax')} />
 						<div className="field">
 							<input type="button" value="Calculate" onClick={this.onCalculateClick.bind(this)}/>
 						</div>
