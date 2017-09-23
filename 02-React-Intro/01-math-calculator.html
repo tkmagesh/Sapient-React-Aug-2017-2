@@ -3,20 +3,51 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Math Calculator</title>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		class Calculator extends React.Component{
+			state = {
+				result : 0
+			};
+
+			onAddClick(){
+				let n1 = parseInt(this.refs.txtNumber1.value, 10),
+					n2 = parseInt(this.refs.txtNumber2.value, 10),
+					result = n1 + n2;
+				this.setState({result : result});
+			}
+			onSubtractClick(){
+				let n1 = parseInt(this.refs.txtNumber1.value, 10),
+					n2 = parseInt(this.refs.txtNumber2.value, 10),
+					result = n1 - n2;
+				this.setState({result : result});
+			}
+			render(){
+				return(
+					<div>
+						<h1>Math Calculator</h1>
+						<hr />
+						<label htmlFor="">Number 1 :</label>
+						<input type="number" ref="txtNumber1"/>
+						<br />
+						<label htmlFor="">Number 2 :</label>
+						<input type="number" ref="txtNumber2"/>
+						<br />
+						<input type="button" value="Add" onClick={this.onAddClick.bind(this)}/>
+						<input type="button" value="Subtract" onClick={this.onSubtractClick.bind(this)}/>
+						<div>{this.state.result}</div>
+					</div>
+				)
+			}
+		}
+		ReactDOM.render(<Calculator />, document.getElementById('content'));
+	</script>
 </head>
 <body>
 	<div id="content">
-		<h1>Math Calculator</h1>
-		<hr>
-		<label for="">Number 1 :</label>
-		<input type="number" name="" id="">
-		<br>
-		<label for="">Number 2 :</label>
-		<input type="number" name="" id="">
-		<br>
-		<input type="button" value="Add">
-		<input type="button" value="Subtract">
-		<div>[Result]</div>
+		
 	</div>
 </body>
 </html>

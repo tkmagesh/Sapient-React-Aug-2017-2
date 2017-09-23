@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Math Calculator</title>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		class EventEmitter{
+			subscriptions = [];
+
+			subscribe(subscription){
+				if (typeof subscription === 'function')
+					this.subscriptions.push(subscription)
+			}
+			trigger(){
+				this.subscriptions.forEach(subscription => subscription());
+			}
+		}
+
+		class CalculatorModel extends EventEmitter{
+			number1 = 0;
+			number2 = 0;
+			result = 0;
+
+			constructor(){
+				super();
+			}
+
+			add(){
+				this.result = this.number1 + this.number2;
+				this.trigger();
+			}
+
+			subtract(){
+				this.result = this.number1 - this.number2;
+				this.trigger();
+			}
+		}
+		class Calculator extends React.Component{
+			
+
+			onAddClick(){
+				this.props.model.number1 = parseInt(this.refs.txtNumber1.value, 10);
+				this.props.model.number2 = parseInt(this.refs.txtNumber2.value, 10);
+				this.props.model.add();
+
+			}
+			onSubtractClick(){
+				this.props.model.number1 = parseInt(this.refs.txtNumber1.value, 10);
+				this.props.model.number2 = parseInt(this.refs.txtNumber2.value, 10);
+				this.props.model.subtract();
+			}
+			render(){
+				return(
+					<div>
+						<h1>Math Calculator</h1>
+						<hr />
+						<label htmlFor="">Number 1 :</label>
+						<input type="number" ref="txtNumber1"/>
+						<br />
+						<label htmlFor="">Number 2 :</label>
+						<input type="number" ref="txtNumber2"/>
+						<br />
+						<input type="button" value="Add" onClick={this.onAddClick.bind(this)}/>
+						<input type="button" value="Subtract" onClick={this.onSubtractClick.bind(this)}/>
+						<div>{this.props.model.result}</div>
+					</div>
+				)
+			}
+		}
+		var calculatorModel = new CalculatorModel();
+		function renderApp(){
+			ReactDOM.render(<Calculator model={calculatorModel}/>, 
+				document.getElementById('content'));
+		}
+		calculatorModel.subscribe(renderApp);
+		renderApp();
+	</script>
+</head>
+<body>
+	<div id="content">
+		
+	</div>
+</body>
+</html>
+
+
+
+
+
+
