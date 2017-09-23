@@ -68,18 +68,12 @@
 
 		//View
 		class SalaryCalculatorView extends React.Component{
-			onBasicChange(evt){
-				this.props.model.set('basic', parseInt(evt.target.value, 10))
+			getOnChangeFor(attrName){
+				return (function onChange(evt){
+					this.props.model.set(attrName, parseInt(evt.target.value, 10))
+				}).bind(this);
 			}
-			onHraChange(evt){
-				this.props.model.set('hra', parseInt(evt.target.value, 10))
-			}
-			onDaChange(evt){
-				this.props.model.set('da', parseInt(evt.target.value, 10))
-			}
-			onTaxChange(evt){
-				this.props.model.set('tax', parseInt(evt.target.value, 10))
-			}
+			
 			onCalculateClick(){
 				this.props.model.calculate();
 			}
@@ -89,36 +83,44 @@
 					<div className="content">
 						<div className="field">
 							<label htmlFor="">Basic :</label>
-							<input type="number" onChange={this.onBasicChange.bind(this)} />
+							<input type="number" onChange={this.getOnChangeFor('basic')} />
 						</div>
 						<div className="field">
 							<label htmlFor="">HRA :</label>
-							<input type="number" onChange={this.onHraChange.bind(this)} />
+							<input type="number" onChange={this.getOnChangeFor('hra')} />
 						</div>
 						<div className="field">
 							<label htmlFor="">DA :</label>
-							<input type="number" onChange={this.onDaChange.bind(this)} />
+							<input type="number" onChange={this.getOnChangeFor('da')} />
 						</div>
 						<div className="field">
 							<label htmlFor="">Tax :</label>
-							<input type="range" min="0" max="30" defaultValue={data.tax} onChange={this.onTaxChange.bind(this)} />
+							<input type="range" min="0" max="30" defaultValue={data.tax} onChange={this.getOnChangeFor('tax')} />
 						</div>
 						<div className="field">
 							<input type="button" value="Calculate" onClick={this.onCalculateClick.bind(this)}/>
 						</div>
-						<div className="field">
-							<table>
-								<tbody>
-									<tr>
-										<td><div>{data.basic}</div></td>
-										<td><div>{data.hra}</div></td>
-										<td><div>{data.da}</div></td>
-										<td><div>{data.tax}</div></td>
-										<td><div>{data.salary}</div></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+						<SalaryCalculatorResultView data={data} />
+					</div>
+				)
+			}
+		}
+		class SalaryCalculatorResultView extends React.Component{
+			render(){
+				let data = this.props.data;
+				return(
+					<div className="field">
+						<table>
+							<tbody>
+								<tr>
+									<td><div>{data.basic}</div></td>
+									<td><div>{data.hra}</div></td>
+									<td><div>{data.da}</div></td>
+									<td><div>{data.tax}</div></td>
+									<td><div id="divResult">{data.salary}</div></td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				)
 			}
