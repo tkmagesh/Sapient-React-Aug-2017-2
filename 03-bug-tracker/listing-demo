@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bug Tracker</title>
+	<style>
+		body{
+			margin-left: 100px;
+		}
+		.bugname, .stats{
+			font-size: 22pt;
+		}
+		.closed{
+			color : red;
+			text-decoration: line-through;
+			font-style: italic;
+			font-weight: bold;
+		}
+		section{
+			margin-bottom: 10px;
+		}
+		#olBugList{
+			list-style: none;
+			width: 500px;
+			-webkit-padding-start : 0px;
+		}
+		li{
+			margin-bottom: 10px;
+			border : 1px solid gray;
+			background-color: #e7e7e7;
+			border-radius: 5px;
+			padding: 10px;
+		}
+		.bugname{
+			cursor: pointer;
+		}
+	</style>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	
+	<script type="text/babel">
+		
+
+		class ListingComponent extends React.Component{
+			
+			render(){
+				var products = ['Pen', 'Pencil', 'Marker', 'Scribble Pad'];
+
+				/*let productItems = [
+				];
+				for(let index=0; index < products.length; index++){
+					let productItem = <li key={index}>{products[index]}</li>;
+					productItems.push(productItem);
+				}*/
+				let productItems = products.map((product, index) => (<li key={index}>{product}</li>));
+				return(
+					<ol>
+						{productItems}
+					</ol>
+				)
+				
+			}
+		}
+		
+		function renderApp(){
+			ReactDOM.render(<ListingComponent/>, document.getElementById('content'));
+		}
+		
+		renderApp();
+	</script>
+</head>
+<body>
+	<h1>Listing</h1>
+	<hr>
+	<div id="content">
+		
+	</div>
+</body>
+</html>
