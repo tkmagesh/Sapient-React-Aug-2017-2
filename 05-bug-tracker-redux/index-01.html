@@ -42,16 +42,57 @@
 
 	<script type="text/babel">
 		
-		
+		function bugsReducer(currentState = [], action){
+			if (action.type === 'ADD_NEW'){
+				let newBug = {
+					name : action.payload,
+					isClosed : false
+				};
+				let newState = [...currentState, newBug];
+				return newState;
+			}
+			if (action.type === 'TOGGLE'){
+				let bugToToggle = action.payload;
+				let toggledBug = {...bugToToggle, isClosed : !bugToToggle.isClosed}
+				let newState = currentState.map(bug => bug === bugToToggle ? toggledBug : bug);
+				return newState;
+			}
+			if (action.type === 'REMOVE_CLOSED'){
+				return currentState.filter(bug => !bug.isClosed);
+			}
+			return currentState;
+		}
+
+		let bugActionCreator = {
+			createNew : function(newBugName){
+				return { type : 'ADD_NEW', payload : newBugName};
+			},
+			toggle : function(bug){
+				return { type : 'TOGGLE', payload : bug}
+			},
+			removeClosed : function(){
+				return { type : 'REMOVE_CLOSED'}
+			}
+		}
+
+		window.store = SM.createStore(bugsReducer);
+
+		let bugActions = SM.bindActionCreators(bugActionCreator, store.dispatch);
 
 		class BugTracker extends React.Component{
+			
 			onCreateClick(){
-				
+				let newBugName = this.refs.txtBugName.value;
+				/*let newBugAction = bugActionCreator.createNew(newBugName);
+				this.props.dispatch(newBugAction);*/
+				//bugActions.createNew(newBugName);
+				this.props.createNew(newBugName);
 			}
 			onBugClick(bug){
-				
+				this.props.toggle(bug);
 			}
 			render(){
+				console.log(this.props);
 				let bugs = this.props.model,
 					bugItems = bugs.map((bug,index) => (
 						<li key={index}>
@@ -86,18 +127,20 @@
 							<ol id="olBugList">
 								{bugItems}
 							</ol>
-							<input type="button" value="Remove Closed" />
+							<input type="button" value="Remove Closed" onClick={() => this.props.removeClosed()}/>
 						</section>
 					</div>
 				)
 			}
 		}
+
 		
-		window.store = SM.createStore(bugsReducer);
+		
+		
 
 		function renderApp(){
 			let state = store.getState();
-			ReactDOM.render(<BugTracker model={state}/>, document.getElementById('content'));
+			ReactDOM.render(<BugTracker model={state} {...bugActions} />, document.getElementById('content'));
 		}
 		store.subscribe(renderApp);
 		renderApp();
