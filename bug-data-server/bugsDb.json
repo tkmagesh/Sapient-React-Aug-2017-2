@@ -1,0 +1,26 @@
+{
+  "bugs": [
+    {
+      "id": 1,
+      "name": "Data integrity checks failed",
+      "isClosed": false,
+      "createdAt": "2017-07-28T06:04:49.597Z"
+    },
+    {
+      "id": 2,
+      "name": "Async actions not created",
+      "isClosed": true,
+      "createdAt": "2017-08-22T09:18:34.082Z"
+    }
+  ],
+  "employees": [
+    {
+      "id": 1,
+      "name": "Magesh"
+    },
+    {
+      "id": 2,
+      "name": "Suresh"
+    }
+  ]
+}
