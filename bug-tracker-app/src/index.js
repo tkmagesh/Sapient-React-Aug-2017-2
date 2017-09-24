@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+
 import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
 
 import appStore from './store';
+import BugTracker from './BugTracker/BugTracker';
 
-console.log(appStore);
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+
+ReactDOM.render(
+	<Provider store={appStore}>
+		<BugTracker />
+	</Provider>, document.getElementById('root'));
+
