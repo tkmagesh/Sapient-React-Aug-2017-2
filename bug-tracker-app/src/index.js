@@ -6,11 +6,14 @@ import './index.css';
 
 import appStore from './store';
 import BugTracker from './BugTracker/BugTracker';
-
+import StatusIndicator from './StatusIndicator/StatusIndicator';
 
 
 ReactDOM.render(
 	<Provider store={appStore}>
-		<BugTracker />
+		<div>
+			<StatusIndicator />
+			<BugTracker />
+		</div>
 	</Provider>, document.getElementById('root'));
 

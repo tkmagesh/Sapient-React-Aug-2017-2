@@ -1,16 +1,15 @@
 function bugsReducer(currentState = [], action){
-	if (action.type === 'ADD_NEW'){
-		let newBug = {
-			name : action.payload,
-			isClosed : false
-		};
+	if (action.type === 'LOAD'){
+		return [...action.payload];
+	}
+	if (action.type === 'ADDED'){
+		let newBug = action.payload
 		let newState = [...currentState, newBug];
 		return newState;
 	}
-	if (action.type === 'TOGGLE'){
-		let bugToToggle = action.payload;
-		let toggledBug = {...bugToToggle, isClosed : !bugToToggle.isClosed}
-		let newState = currentState.map(bug => bug === bugToToggle ? toggledBug : bug);
+	if (action.type === 'TOGGLED'){
+		let toggledBug = action.payload;
+		let newState = currentState.map(bug => bug.id === toggledBug.id ? toggledBug : bug);
 		return newState;
 	}
 	if (action.type === 'REMOVE_CLOSED'){

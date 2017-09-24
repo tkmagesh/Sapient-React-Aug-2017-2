@@ -1,11 +1,13 @@
-import { createStore, combineReducers } from 'redux';
-import { bugsReducer, counterReducer } from '../reducers';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { bugsReducer, counterReducer, statusReducer } from '../reducers';
+import thunk from 'redux-thunk';
 
 let allReducers = combineReducers({
 	bugs : bugsReducer,
-	counter : counterReducer
+	counter : counterReducer,
+	status : statusReducer
 });
 
-let appStore = createStore(allReducers);
+let appStore = createStore(allReducers, applyMiddleware(thunk));
 
 export default appStore;
