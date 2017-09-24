@@ -40,8 +40,11 @@
 	<script src="babel.min.js"></script>
 	<script src="redux.js"></script>
 
+
+
+
 	<script type="text/babel">
-		
+		//Reducers
 		function bugsReducer(currentState = [], action){
 			if (action.type === 'ADD_NEW'){
 				let newBug = {
@@ -62,7 +65,20 @@
 			}
 			return currentState;
 		}
+		function counterReducer(currentState = 0, action){
+			if (action.type === 'INCREMENT')
+				return ++currentState;
+			if (action.type === 'DECREMENT')
+				return --currentState;
+			return currentState;
+		}
 
+		var allReducers = Redux.combineReducers({
+			bugs : bugsReducer,
+			counter : counterReducer
+		});
+
+		//action creators
 		let bugActionCreator = {
 			createNew : function(newBugName){
 				return { type : 'ADD_NEW', payload : newBugName};
@@ -74,11 +90,25 @@
 				return { type : 'REMOVE_CLOSED'}
 			}
 		};
+		var counterActionCreators = {
+			increment : function (){
+				return { type : 'INCREMENT'};
+			},
+			decrement : function (){
+				return { type : 'DECREMENT'};
+			}
+		};
 
-		window.store = Redux.createStore(bugsReducer);
+		//store
+		window.store = Redux.createStore(allReducers);
 
+
+		//actions
 		let bugActions = Redux.bindActionCreators(bugActionCreator, store.dispatch);
+		var counterActions = Redux.bindActionCreators(counterActionCreators, store.dispatch);
 
+		
+		//components
 		class BugTracker extends React.Component{
 			render(){
 				let {model : bugs, createNew, toggle, removeClosed } = this.props;
@@ -158,9 +188,24 @@
 			);
 		}
 
+		let Counter = ({value, increment, decrement}) => (
+			<div>
+				<input type="button" value="DECREMENT" onClick={() => decrement()}/>
+				<span> [ {value} ] </span>
+				<input type="button" value="INCREMENT" onClick={() => increment()}/>
+			</div>
+		);
+
+
 		function renderApp(){
-			let state = store.getState();
-			ReactDOM.render(<BugTracker model={state} {...bugActions} />, document.getElementById('content'));
+			let state = store.getState(),
+				{bugs, counter} = state;
+			ReactDOM.render(
+				<div>
+					<BugTracker model={bugs} {...bugActions} />
+					<hr />
+					<Counter value={counter} {...counterActions} />
+				</div>, document.getElementById('content'));
 		}
 		store.subscribe(renderApp);
 		renderApp();
